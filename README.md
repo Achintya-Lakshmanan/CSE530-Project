@@ -29,6 +29,39 @@ source .venv/bin/activate
 - `run_all.py` — Master runner script (executes test_vtune.py and stores results)
 - `test.py` — Original benchmark script with `--perf` option (Linux only)
 - `results/` — Output directory for benchmark results (timestamped files)
+- `timing_only.py` — Refactored CLI harness for running deterministic loops (MLP, KAN or both)
+- `benchmark_mlp.py` — Convenience wrapper that pins `--model mlp` for profiler/perf runs
+- `benchmark_kan.py` — Convenience wrapper that pins `--model kan` for profiler/perf runs
+
+## Perf-Based Cache Analysis (Linux)
+
+The new `benchmark_*.py` entrypoints run a tight forward/backward training loop that is stable under Linux `perf` counters. Example commands (the `sudo` prefix depends on your distro configuration):
+
+```bash
+sudo perf stat -e cache-references,cache-misses,cycles,instructions \
+	/Users/achintya/Achintya/College_Penn/Sem-1/CSE-530/CSE530-Project/.venv/bin/python \
+	benchmark_mlp.py --iterations 200 --warmup 50 --batch-size 32
+
+sudo perf stat -e cache-references,cache-misses,cycles,instructions \
+	/Users/achintya/Achintya/College_Penn/Sem-1/CSE-530/CSE530-Project/.venv/bin/python \
+	benchmark_kan.py --iterations 200 --warmup 50 --batch-size 32
+```
+
+To run both models back-to-back without `perf`, use the shared CLI:
+
+```bash
+/Users/achintya/Achintya/College_Penn/Sem-1/CSE-530/CSE530-Project/.venv/bin/python timing_only.py --model both
+```
+
+Useful switches:
+
+- `--iterations`: number of timed steps (default 25)
+- `--warmup`: warmup steps discarded before `perf` sampling (default 5)
+- `--no-backward`: forward-only runs (skip gradient computation)
+- `--device`: `cpu` or `cuda:0`
+- `--kan-width`: width of the intermediate KAN layer
+
+> **Heads-up:** The `kan` package must be installed (`pip install kan`) for KAN benchmarks. The MLP path works without it.
 
 ## Running Benchmarks
 
