@@ -60,6 +60,7 @@ Useful switches:
 - `--no-backward`: forward-only runs (skip gradient computation)
 - `--device`: `cpu` or `cuda:0`
 - `--kan-width`: width of the intermediate KAN layer
+- `--mlp-hidden-dims`: comma-separated hidden sizes (e.g. `512,512,512`) to inflate the MLP workload when you want instruction counts closer to KAN
 
 > **Heads-up:** The `kan` package must be installed (`pip install kan`) for KAN benchmarks. The MLP path works without it.
 

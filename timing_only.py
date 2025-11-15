@@ -14,22 +14,27 @@ import torch.nn as nn
 
 
 class SimpleMLP(nn.Module):
-    """Tiny MLP used for apples-to-apples comparison with KAN."""
+    """Configurable MLP used for apples-to-apples comparison with KAN."""
 
-    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int) -> None:
+    def __init__(self, input_dim: int, hidden_dims: Sequence[int], output_dim: int) -> None:
         super().__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.fc2 = nn.Linear(hidden_dim, output_dim)
+        dims = [input_dim, *hidden_dims, output_dim]
+        layers: List[nn.Module] = []
+        for in_dim, out_dim in zip(dims[:-2], dims[1:-1]):
+            layers.append(nn.Linear(in_dim, out_dim))
+            layers.append(nn.ReLU())
+        layers.append(nn.Linear(dims[-2], dims[-1]))
+        self.net = nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.fc2(torch.relu(self.fc1(x)))
+        return self.net(x)
 
 
 @dataclass
 class BenchmarkConfig:
     input_dim: int = 64
     output_dim: int = 64
-    hidden_dim: int = 128
+    mlp_hidden_dims: Sequence[int] = (128,)
     kan_width: int = 6
     batch_size: int = 16
     warmup_steps: int = 5
@@ -56,6 +61,14 @@ def _resolve_device(device: str) -> torch.device:
     return resolved
 
 
+def _parse_hidden_dims(raw: str) -> List[int]:
+    parts = [piece.strip() for piece in raw.split(",")]
+    dims = [int(part) for part in parts if part]
+    if not dims:
+        raise ValueError("--mlp-hidden-dims must include at least one positive integer")
+    return dims
+
+
 def _synchronize_if_needed(device: torch.device) -> None:
     if device.type == "cuda":
         torch.cuda.synchronize(device)
@@ -73,7 +86,7 @@ def _maybe_import_kan():
 
 def _build_model(model_kind: str, config: BenchmarkConfig) -> nn.Module:
     if model_kind == "mlp":
-        return SimpleMLP(config.input_dim, config.hidden_dim, config.output_dim)
+        return SimpleMLP(config.input_dim, config.mlp_hidden_dims, config.output_dim)
     if model_kind == "kan":
         KAN = _maybe_import_kan()
         return KAN([config.input_dim, config.kan_width, config.output_dim])
@@ -153,7 +166,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model", choices=["mlp", "kan", "both"], default="both")
     parser.add_argument("--input-dim", type=int, default=64)
     parser.add_argument("--output-dim", type=int, default=64)
-    parser.add_argument("--hidden-dim", type=int, default=128)
+    parser.add_argument(
+        "--mlp-hidden-dims",
+        type=str,
+        default="128",
+        help="Comma-separated list of hidden layer sizes for the MLP",
+    )
     parser.add_argument("--kan-width", type=int, default=6)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--warmup", type=int, default=5)
@@ -171,7 +189,7 @@ def main(argv: Sequence[str] | None = None) -> Sequence[BenchmarkResult]:
     config = BenchmarkConfig(
         input_dim=args.input_dim,
         output_dim=args.output_dim,
-        hidden_dim=args.hidden_dim,
+        mlp_hidden_dims=tuple(_parse_hidden_dims(args.mlp_hidden_dims)),
         kan_width=args.kan_width,
         batch_size=args.batch_size,
         warmup_steps=args.warmup,
