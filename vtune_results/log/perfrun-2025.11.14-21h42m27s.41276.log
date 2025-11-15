@@ -1,8 +1,0 @@
-58 [12460] INFO perfrun.launcher <> - Launcher main begin
-63 [12460] INFO perfrun.launcher <> - MessageCatalogInit finished
-63 [12460] INFO perfrun.launcher <> - Launcher instance created
-63 [12460] INFO perfrun.launcher <> - argc = 7; cmdline = C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\amplxe-runss.exe --ui-output-format xml --ui-output-fd 920 --option-file D:\Achintya\Penn_State\Sem-1\CSE-530\Project\vtune_results\config\runss.options.1 
-80 [12460] INFO perfrun.launcher <> - New signal handler callback was added
-142 [12460] INFO perfrun.perfcollector <> - SEP tool path: C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\sep.exe
-155 [12460] WARN perfrun.launcher <> - IParser::parseStream method returned an error: Option 'pmu-type' received value from the next argument: '--event-config=CPU_CLK_UNHALTED.THREAD,CPU_CLK_UNHALTED.REF_TSC:sample:sa=2600000,INST_RETIRED.ANY:sample:sa=2600000,CPU_CLK_UNHALTED.DISTRIBUTED,UOPS_RETIRED.RETIRE_SLOTS:sample:sa=2000003', but it seems to be an option. Use '-option=value' declaration form or make sure that value is not missed, at file: vcs\perfrun1\launcher\src\cmdline_parser.cpp:804
-156 [12460] ERROR perfrun.launcher <> - Messenger::say: Option 'pmu-type' received value from the next argument: '--event-config=CPU_CLK_UNHALTED.THREAD,CPU_CLK_UNHALTED.REF_TSC:sample:sa=2600000,INST_RETIRED.ANY:sample:sa=2600000,CPU_CLK_UNHALTED.DISTRIBUTED,UOPS_RETIRED.RETIRE_SLOTS:sample:sa=2000003', but it seems to be an option. Use '-option=value' declaration form or make sure that value is not missed
