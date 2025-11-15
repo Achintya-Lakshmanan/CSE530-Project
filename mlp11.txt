@@ -1,0 +1,25 @@
+Starting benchmark...
+
+Running MLP...
+MLP — 3.499 ms ± 0.331 over 25 iterations (1,116,736 params)
+
+
+ Performance counter stats for 'python3 benchmarkmlp.py --mlp-hidden-dims 512,512,512,512,512':
+
+          2,310.72 msec task-clock                #    1.241 CPUs utilized          
+                86      context-switches          #   37.218 /sec                   
+                 7      cpu-migrations            #    3.029 /sec                   
+            80,780      page-faults               #   34.959 K/sec                  
+     6,150,226,347      cycles                    #    2.662 GHz                      (49.64%)
+     6,465,011,267      instructions              #    1.05  insn per cycle           (61.92%)
+     1,338,869,493      branches                  #  579.417 M/sec                    (61.74%)
+        25,483,448      branch-misses             #    1.90% of all branches          (62.15%)
+     1,733,300,325      L1-dcache-loads           #  750.114 M/sec                    (63.11%)
+       113,683,133      L1-dcache-load-misses     #    6.56% of all L1-dcache accesses  (63.26%)
+        26,438,949      LLC-loads                 #   11.442 M/sec                    (50.83%)
+         7,757,443      LLC-load-misses           #   29.34% of all LL-cache accesses  (50.10%)
+
+       1.862364596 seconds time elapsed
+
+       2.004738000 seconds user
+       0.307259000 seconds sys
