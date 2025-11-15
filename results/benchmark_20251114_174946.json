@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-11-14T17:50:04.160930",
+  "mode": "quick",
+  "return_code": 0,
+  "output_file": "D:\\Achintya\\Penn_State\\Sem-1\\CSE-530\\Project\\results\\benchmark_20251114_174946.txt",
+  "command": "D:\\Achintya\\Penn_State\\Sem-1\\CSE-530\\Project\\.venv\\Scripts\\python.exe D:\\Achintya\\Penn_State\\Sem-1\\CSE-530\\Project\\test_vtune.py"
+}
