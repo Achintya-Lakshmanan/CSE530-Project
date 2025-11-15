@@ -18,7 +18,6 @@ model/
 
 # Results
 results.txt
-*.txt
 !requirements.txt
 
 # OS

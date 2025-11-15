@@ -1,0 +1,26 @@
+Starting benchmark...
+
+Running KAN...
+checkpoint directory created: ./model
+saving model version 0.0
+KAN — 409.835 ms ± 138.409 over 25 iterations (11,732 params)
+
+ Performance counter stats for 'python3 benchmarkkan.py':
+
+         19,702.21 msec task-clock                #    1.123 CPUs utilized          
+             1,206      context-switches          #   61.211 /sec                   
+                47      cpu-migrations            #    2.386 /sec                   
+            86,470      page-faults               #    4.389 K/sec                  
+    52,666,692,625      cycles                    #    2.673 GHz                      (50.08%)
+    38,572,687,458      instructions              #    0.73  insn per cycle           (62.61%)
+     8,385,151,600      branches                  #  425.594 M/sec                    (62.52%)
+       301,329,732      branch-misses             #    3.59% of all branches          (62.45%)
+    12,150,790,445      L1-dcache-loads           #  616.722 M/sec                    (62.49%)
+       638,702,069      L1-dcache-load-misses     #    5.26% of all L1-dcache accesses  (62.50%)
+       210,373,995      LLC-loads                 #   10.678 M/sec                    (50.05%)
+        37,306,353      LLC-load-misses           #   17.73% of all LL-cache accesses  (50.08%)
+
+      17.547817962 seconds time elapsed
+
+      18.943719000 seconds user
+       0.764574000 seconds sys
